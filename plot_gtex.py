@@ -95,7 +95,7 @@ def binary_search(key, L):
 
 
 def meta_data(file_group, file):
-    
+
     """
     Gets certain values for samples and target group from file_group
 
@@ -109,11 +109,11 @@ def meta_data(file_group, file):
     samples: list of info from index of samples
     target_group: list of info for file_group
     """
- 
+
     header = None
     samples = []
     target_group = []
-    
+
     for l in open(file):
         samples_info = l.rstrip().split('\t')
 
@@ -134,7 +134,7 @@ def meta_data(file_group, file):
 
 
 def main():
-    
+
     args = parse_args()
 
     if not os.path.exists(args.sample_attributes):

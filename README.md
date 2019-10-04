@@ -11,9 +11,9 @@ Parallel Arrays, Profiling, and Benchmarking
 ## Usage
 `plot_gtex.py` is the main program used to generate boxplots from the GTEx datasets in this repository. Example usage of `plot_gtex.py`:
 
-'''
+```
 `python3 plot_gtex.py --gene_reads GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz?raw=true --sample_attributes GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt --gene ACTA2 --group_type SMTS --output_file ACTA2.png`
-'''
+```
 
 ## Profiling and Benchmarking
 Profiling and benchmarking was performed using cProfile:

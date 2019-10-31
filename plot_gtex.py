@@ -3,6 +3,10 @@ import gzip
 import sys
 import os
 import argparse
+import importlib
+sys.path.append('hash-tables-rymo1354')
+hash_tables = importlib.import_module('hash-tables-rymo1354.hash_tables')  # noqa: E402
+hash_functions = importlib.import_module('hash-tables-rymo1354.hash_functions')  # noqa: E402
 
 
 # parse arguments
@@ -97,7 +101,7 @@ def binary_search(key, L):
 def meta_data(file_group, file):
 
     """
-    Gets certain values for samples and target group from file_group
+    Puts samples and target group into hash table from file_group
 
     Arguments
     ________
@@ -106,13 +110,14 @@ def meta_data(file_group, file):
 
     Returns
     _______
-    samples: list of info from index of samples
+    ht: hash table to store target_idx as key and sample_idx as value
     target_group: list of info for file_group
     """
 
     header = None
-    samples = []
+    # samples = []
     target_group = []
+    ht = hash_tables.ChainedHash(100000, hash_functions.h_ascii)
 
     for l in open(file):
         samples_info = l.rstrip().split('\t')
@@ -124,13 +129,19 @@ def meta_data(file_group, file):
         sample_idx = linear_search('SAMPID', header)
         target_idx = linear_search(file_group, header)
 
-        if (target_idx == -1):
-            return [], []
+        if target_idx == -1:
+            return None, target_group
 
-        samples.append(samples_info[sample_idx])
-        target_group.append(samples_info[target_idx])
+        key = samples_info[target_idx]
+        value = samples_info[sample_idx]
+        search = ht.search(key)
+        if search is None:
+            ht.add(key, [value])
+            target_group.append(key)
+        else:
+            search.append(value)
 
-    return samples, target_group
+    return ht, target_group
 
 
 def main():
@@ -144,11 +155,12 @@ def main():
         print('Cannot find meta file %s' % args.gene_reads)
         sys.exit(1)
 
-    samples, target_group = meta_data(args.group_type,
-                                      args.sample_attributes)
+    hash_table, target_group = meta_data(args.group_type,
+                                         args.sample_attributes)
+    target_group.sort()
 
-    if len(target_group) == 0:
-        print('Cannot find group_type %s' % target_group)
+    if hash_table is None:
+        print('Cannot find group_type')
         sys.exit(1)
 
     version = None
@@ -182,29 +194,25 @@ def main():
             sys.exit(1)
 
         if rna_counts[description_idx] == args.gene:
-            attrs = list(set(target_group))
-            attrs.sort()
             par_array = []
-            for attr in attrs:
-                attr_idxs = []
-                for i in range(len(target_group)):
-                    if attr == target_group[i]:
-                        attr_idxs.append(i)
+            rna_map = hash_tables.ChainedHash(
+                100000, hash_functions.h_ascii)
+            for i in range(description_idx + 1, len(rna_header)):
+                rna_map.add(rna_header[i], int(rna_counts[i]))
 
+            for attr in target_group:
                 attr_counts = []
-                for attr_idx in attr_idxs:
-                    # linear search
-                    # rna_header_idx = linear_search(samples[attr_idx],
-                    #                               rna_header)
-                    # binary search
-                    rna_header_idx = binary_search(samples[attr_idx],
-                                                   rna_header_plus_index)
-                    if rna_header_idx == -1:
+                meta_find = hash_table.search(attr)
+                if meta_find is None:
+                    continue
+                for sample_name in meta_find:
+                    count = rna_map.search(sample_name)
+                    if count is None:
                         continue
-                    count = rna_counts[rna_header_idx]
-                    attr_counts.append(int(count))
+                    attr_counts.append(count)
                 par_array.append(attr_counts)
-            data_viz.boxplot(par_array, attrs, args.gene,
+
+            data_viz.boxplot(par_array, target_group, args.gene,
                              args.group_type, "Gene read counts",
                              args.output_file)
             sys.exit(0)

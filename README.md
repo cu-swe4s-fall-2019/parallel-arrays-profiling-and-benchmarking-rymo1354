@@ -8,7 +8,7 @@
 ![](https://travis-ci.com/cu-swe4s-fall-2019/parallel-arrays-profiling-and-benchmarking-rymo1354.svg?branch=master)
 
 ## Usage
-`plot_gtex.py` is the main program used to generate boxplots from the GTEx datasets in this repository. It uses `hash_tables.py` and `hash_functions.py` modules from the `hash-tables-rymo1354` submodule included in the current repository. Example usage of `plot_gtex.py`:
+`plot_gtex.py` is the main program used to generate boxplots from the GTEx datasets in this repository. It uses `hash_tables.py` and `hash_functions.py` modules from the `hash-tables-rymo1354` submodule included in the current repository. To ensure that the submodule is appropriately copied when cloning this repository, run `git clone <repository_name>` followed by `git submodule update --init`. Example usage of `plot_gtex.py`:
 
 ```
 `python3 plot_gtex.py --gene_reads GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz?raw=true --sample_attributes GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt --gene ACTA2 --group_type SMTS --output_file ACTA2.png`

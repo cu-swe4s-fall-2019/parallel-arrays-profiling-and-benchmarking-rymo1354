@@ -117,7 +117,7 @@ def meta_data(file_group, file):
     header = None
     # samples = []
     target_group = []
-    ht = hash_tables.ChainedHash(100000, hash_functions.h_ascii)
+    ht = hash_tables.ChainedHash(80000, hash_functions.h_ascii)
 
     for l in open(file):
         samples_info = l.rstrip().split('\t')
@@ -196,7 +196,7 @@ def main():
         if rna_counts[description_idx] == args.gene:
             par_array = []
             rna_map = hash_tables.ChainedHash(
-                100000, hash_functions.h_ascii)
+                80000, hash_functions.h_ascii)
             for i in range(description_idx + 1, len(rna_header)):
                 rna_map.add(rna_header[i], int(rna_counts[i]))
 

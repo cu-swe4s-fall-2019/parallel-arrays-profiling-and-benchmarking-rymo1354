@@ -3,9 +3,9 @@ import gzip
 import sys
 import os
 import argparse
-sys.path.append('hash-tables-rymo1354')
-from hash-tables-rymo1354 import hash_tables
-from hash-tables-rymo1354 import hash_functions
+sys.path.append('hash_tables_rymo1354')
+from hash_tables_rymo1354 import hash_tables  # noqa: E402
+from hash_tables_rymo1354 import hash_functions  # noqa: E402
 
 
 # parse arguments

@@ -21,9 +21,9 @@ Profiling and benchmarking was performed using cProfile:
 python -m cProfile -s time plot_gtex.py --gene_reads GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz?raw=true --sample_attributes GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt --gene ACTA2 --group_type SMTS --output_file ACTA2.png
 ```
 The `linear_search` call in `plot_gtex.py` took a tottime of 20.315 seconds compared with the `binary_search` call in `plot_gtex.py` which took a tottime of 1.230 seconds. This is a marked increase in the runtime of the `plot_gtex.py` program. In comparison, using the ascii hash with a table size of 80,000 and a linear probing collision strategy resulted in the following tottimes:
-* hash_functions.py: 0.307 seconds
-* hash_tables.py: 0.265 + 0.072 seconds
-This resulted in a tottime of 0.644 seconds, nearly twice as fast as the binary search method and 40x faster than the linear search method. 
+* `hash_functions.py`: 0.307 seconds
+* `hash_tables.py`: 0.265 seconds + 0.072 seconds (called twice) 
+This resulted in a tottime of 0.644 seconds, nearly twice as fast as the binary search method and 40x faster than the linear search method. Hashing is certainly an improvement over parallel arrays. 
  
 ## Installation
 To use this program, you need to have Python 3.6 installed

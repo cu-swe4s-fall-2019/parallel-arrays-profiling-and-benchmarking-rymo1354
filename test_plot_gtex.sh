@@ -38,3 +38,23 @@ if [ -f "test1.png" ]; then
     echo "test1.png successful"
     rm test1.png
 fi
+
+echo "...test boxplot..."
+run box2 python3 plot_gtex.py --gene_reads GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz?raw=true --sample_attributes GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt --gene ACTA2 --group_type SMTSD --output_file test2.png
+assert_exit_code 0
+assert_no_stdout
+if [ -f "test2.png" ]; then
+    echo "test2.png successful"
+    rm test2.png
+fi
+
+echo "...test boxplot..."
+run box3 python3 plot_gtex.py --gene_reads GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz?raw=true --sample_attributes GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt --gene SDHC --group_type SMTS --output_file test3.png
+assert_exit_code 0
+assert_no_stdout
+if [ -f "test3.png" ]; then
+    echo "test3.png successful"
+    rm test3.png
+fi
+
+
